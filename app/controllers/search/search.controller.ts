@@ -1,24 +1,37 @@
 import { Router, Request, Response } from "express";
 
-import { data } from "../../db/data";
+import { getDataFromDatabase } from "../../helpers";
 
 const router: Router = Router();
 
 router.get("/", (req: Request, res: Response) => {
-  res.send(data[0].title);
+  res.send(getDataFromDatabase()[0].title);
 });
 
-router.get("/:searchQuery", (req: Request, res: Response) => {
-  let { searchQuery } = req.params;
+router.get("/rId/:id", (req: Request, res: Response) => {
+  const { id } = req.params;
+  res.send(searchForRecipesById(id));
+});
+
+router.get("/title/:searchQuery", (req: Request, res: Response) => {
+  const { searchQuery } = req.params;
   res.send(searchForRecipesByTitle(searchQuery));
 });
 
+router.get("/title", (req: Request, res: Response) => {
+  res.send(getDataFromDatabase().splice(0, 10));
+});
+
 function searchForRecipesByTitle(searchQuery: string): string {
-  const filteredRecipesForSearch = data.filter(recipe =>
+  const filteredRecipesForSearch = getDataFromDatabase().filter(recipe =>
     recipe.title.toLowerCase().includes(searchQuery)
   );
-  console.log(filteredRecipesForSearch);
   return JSON.stringify(filteredRecipesForSearch);
+}
+
+function searchForRecipesById(id: string): string {
+  const recipeFoundById = getDataFromDatabase().filter(recipe => recipe.recipe_id === id);
+  return JSON.stringify(recipeFoundById);
 }
 
 export const SearchController: Router = router;
