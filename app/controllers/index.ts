@@ -1,2 +1,3 @@
-/* app/controllers/index.ts */
-export * from './welcome.controller';
+export * from "./welcome/welcome.controller";
+export * from "./search/search.controller";
+export * from "./get/get.controller";
