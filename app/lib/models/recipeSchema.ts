@@ -16,9 +16,6 @@ export const RecipeSchema = new Schema({
     source_url: {
         type: String
     },
-    recipe_id: {
-        type: String
-    },
     image_url: {
         type: String
     },
