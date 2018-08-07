@@ -1,12 +1,11 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import * as mongoose from "mongoose";
-import { Routes } from "./routes/crmRoutes";
 
+import { Routes } from "./routes/crmRoutes";
 import { MONGO_URL } from "../shared/mongo-url";
 
 class App {
-
     public app: express.Application;
     public routePrv: Routes = new Routes();
     public mongoUrl: string = MONGO_URL;
@@ -24,12 +23,11 @@ class App {
     }
 
     private config(): void {
-        // support application/json type post data
+        // Support application/json type post data.
         this.app.use(bodyParser.json());
-        //support application/x-www-form-urlencoded post data
+        // Support application/x-www-form-urlencoded post data.
         this.app.use(bodyParser.urlencoded({ extended: false }));
     }
-
 }
 
 export default new App().app;

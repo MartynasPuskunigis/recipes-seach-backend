@@ -1,10 +1,13 @@
 import * as mongoose from "mongoose";
 import { Request, Response } from "express";
+
+import { searchForRecipesByTitle, getOnePageOfRecipes } from "./recipeControllerHelpers";
 import { RecipeSchema } from "../models/recipeSchema";
 import { SearchTypes } from "../models/searchModel";
 import { Recipe } from "../models/recipeModel";
-import { searchForRecipesByTitle, getOnePageOfRecipes } from "./recipeControllerHelpers";
+
 export const RecipeModel = mongoose.model("allrecipes", RecipeSchema);
+
 export class RecipeController {
     public addNewRecipe(req: Request, res: Response): void {
         const newRecipe = new RecipeModel(req.body);
@@ -15,6 +18,7 @@ export class RecipeController {
             res.json(recipe);
         });
     }
+
     public getRecipes(req: Request, res: Response): void {
         const { q, page }: SearchTypes = req.query;
         const startingRecipe = page * 10 - 10;
@@ -39,6 +43,7 @@ export class RecipeController {
             });
         }
     }
+
     public getRecipeWithID(req: Request, res: Response): void {
         RecipeModel.findById(req.params.recipeId, (err, recipe) => {
             if (err) {
@@ -47,6 +52,7 @@ export class RecipeController {
             res.json(recipe);
         });
     }
+
     public updateRecipe(req: Request, res: Response): void {
         RecipeModel.findOneAndUpdate({ _id: req.params.recipeId }, req.body, { new: true }, (err, recipe) => {
             if (err) {
@@ -55,6 +61,7 @@ export class RecipeController {
             res.json(recipe);
         });
     }
+
     public deleteRecipe(req: Request, res: Response): void {
         RecipeModel.remove({ _id: req.params.recipeId }, (err, recipe) => {
             if (err) {
